@@ -1,5 +1,6 @@
 package org.example;
 
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -39,35 +40,50 @@ public class Main {
             System.out.println("5.Save to file  6.Upload from file  7.Reset Pokédex  8.Save and quit.");
             System.out.print("Choose option: ");
             int option = scan.nextInt();
-
             switch (option){
                 case 1 -> {
                     for (Pokemon p : pokelist) {
                         System.out.println(p);
                     }
-
+                }
+                case 2 -> { System.out.print("Enter new Pokémon name: ");
+                    scan.nextLine();
+                    String newName = scan.nextLine();
+                    System.out.print("Enter the Pokemon type: ");
+                    String newType = scan.nextLine();
+                    Types type = Types.valueOf(newType);
+                    System.out.print("Is the Pokémon a dual type? (True or False): ");
+                    boolean dualtype = scan.nextBoolean();
+                    Types type2 = null;
+                    if (dualtype) {
+                        System.out.print("Enter 2nd Type: ");
+                        scan.nextLine();
+                        String newType2 = scan.nextLine();
+                        type2 = Types.valueOf(newType2);
+                    }
+                    System.out.print("Enter the Pokemon max Hp: ");
+                    int newMaxhp = scan.nextInt();
+                    System.out.print("Enter the Pokemon current Hp: ");
+                    int newCurhp = scan.nextInt();
+                    Pokemon p8 = new Pokemon(newName, type, type2, newMaxhp, newCurhp);
+                    pokelist.add(p8);
                 }
 
 
 
 
 
+
+
+
+
+
+
                 case 8 ->{ System.out.println("System quitting..."); running = false;}
+
+
+
             }
-
-
-
-
-
-        }
-
-
-
-
-
-
-
-
-
         }
     }
+}
