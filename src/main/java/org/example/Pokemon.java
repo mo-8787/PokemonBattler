@@ -20,7 +20,6 @@ public class Pokemon {
         MaxHp = maxHp;
         CurrentHp = currentHp;
     }
-
     public Pokemon(String name, Types type1, int maxHp, int currentHp) { //constructor for single type
         this.name = name;
         this.type1 = type1;
