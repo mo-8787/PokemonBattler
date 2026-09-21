@@ -14,4 +14,9 @@ public class Attack {
         this.accuracy = accuracy;
         this.atkType = atkType;
     }
+
+    @Override     // so it becomes readable output
+    public String toString() {
+        return name + " (BaseDmg: " + baseDmg + " | Accuracy: " + accuracy + " | Type: " + atkType + ")";
+    }
 }
