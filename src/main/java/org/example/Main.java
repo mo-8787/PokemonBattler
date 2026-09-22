@@ -7,6 +7,7 @@ import java.util.Scanner;
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
+   public static ArrayList <Pokemon> pokelist = new ArrayList<>();
     public static void main(String[] args) {
 
         Scanner scan = new Scanner(System.in);
@@ -27,12 +28,9 @@ public class Main {
         Pokemon p7 = new Pokemon("Articuno",Types.ICE,Types.FLYING,90,90);
         p7.attacks.add(new Attack("Blizzard",110,70,Types.ICE));
 
-
-        ArrayList <Pokemon> pokelist = new ArrayList<>();
+        //ArrayList <Pokemon> pokelist = new ArrayList<>();
         pokelist.add(p1); pokelist.add(p2); pokelist.add(p3); pokelist.add(p4); pokelist.add(p5);
         pokelist.add(p6); pokelist.add(p7);
-
-
 
         while(running) {
             System.out.println("=== Pokédex Menu ===");
@@ -67,7 +65,15 @@ public class Main {
                     int newCurhp = scan.nextInt();
                     Pokemon p8 = new Pokemon(newName, type, type2, newMaxhp, newCurhp);
                     pokelist.add(p8);
+                    System.out.println("Pokémon added successfully.");
                 }
+                case 3 -> editPokemon(scan);
+
+
+
+
+
+                case 4-> removePokemon(scan);
 
 
 
@@ -86,4 +92,48 @@ public class Main {
             }
         }
     }
+
+    public static void editPokemon(Scanner scan) {
+        System.out.print("Select the Pokémon you wish to edit: ");
+        scan.nextLine();
+        String name = scan.nextLine();
+        Pokemon selected = null;
+        for (Pokemon poke : pokelist) {
+            if (name .equalsIgnoreCase(poke.name)) {
+            selected = poke;
+            break;
+            }
+        }
+        if (selected == null) {
+            System.out.println("Selected Pokémon does not exist.");
+        }
+        System.out.println(selected);
+    }
+
+    public static void removePokemon(Scanner scan) {
+        System.out.print("Select the Pokémon you wish to remove: ");
+        scan.nextLine();
+        String name = scan.nextLine();
+        Pokemon selected = null;
+        for (Pokemon poke : pokelist) {
+            if (name .equalsIgnoreCase(poke.name)) {
+                selected = poke;
+                pokelist.remove(selected);
+                System.out.println("Pokémon removed successfully.");
+                break;
+            }
+        }
+        if (selected == null) {
+            System.out.println("Selected Pokémon does not exist.");
+        }
+    }
+
+
+
+
+
+
+
+
+
 }
