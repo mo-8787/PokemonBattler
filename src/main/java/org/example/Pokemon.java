@@ -5,12 +5,12 @@ import org.example.Types;
 import java.util.ArrayList;
 
 public class Pokemon {
-    String name;
-    Types type1;
-    Types type2;
-    int MaxHp;
-    int CurrentHp;
-    ArrayList<Attack> attacks = new ArrayList<>();
+    public String name;
+    public Types type1;
+    public Types type2;
+    public int MaxHp;
+    public int CurrentHp;
+    public ArrayList<Attack> attacks = new ArrayList<>();
 
 
     public Pokemon(String name, Types type1, Types type2, int maxHp, int currentHp) {    //constructor for dual type

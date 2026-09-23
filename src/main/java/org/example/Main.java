@@ -68,26 +68,10 @@ public class Main {
                     System.out.println("Pokémon added successfully.");
                 }
                 case 3 -> editPokemon(scan);
-
-
-
-
-
                 case 4-> removePokemon(scan);
 
 
-
-
-
-
-
-
-
-
-
                 case 8 ->{ System.out.println("System quitting..."); running = false;}
-
-
 
             }
         }
@@ -101,13 +85,90 @@ public class Main {
         for (Pokemon poke : pokelist) {
             if (name .equalsIgnoreCase(poke.name)) {
             selected = poke;
+            System.out.println(selected);
+            System.out.println("1.Change Pokémon name  2.Change Pokémon HP  ");
+            System.out.println("3.Change Pokémon type  4.Teach a new attack  5.Remove attack");
+            System.out.print("Select option: ");
+            int option = scan.nextInt();
+            switch (option) {
+                case 1 -> {
+                    System.out.print("Enter new Pokémon name: ");
+                    scan.nextLine();
+                    String newName = scan.nextLine();
+                    poke.name = newName;
+                    System.out.println("New name is: " + poke.name);
+                }
+                case 2 -> {
+                    System.out.print("Enter new Pokémon max HP: ");
+                    scan.nextLine();
+                    int newHp = scan.nextInt();
+                    poke.MaxHp = newHp;
+                    poke.CurrentHp = newHp;
+                    System.out.println("New Pokémon max HP is: " + poke.MaxHp);
+                }
+                case 3 -> {
+                    System.out.print("Enter new Pokémon type: ");
+                    scan.nextLine();
+                    String newType = scan.nextLine();
+                    Types newtype = Types.valueOf(newType);
+                    poke.type1 = newtype;
+                    if (poke.type2 != null) {
+                        System.out.print("Enter 2nd Pokémon type: ");
+                        String newType2 = scan.nextLine();
+                        Types newtype2 = Types.valueOf(newType2);
+                        poke.type2 = newtype2;
+                        System.out.println("New Pokémon type is : " + poke.type1 + " | " + poke.type2);
+                    } else if (poke.type2 == null) {
+                        System.out.println("New Pokémon type is : " + poke.type1);
+                    }
+                }
+                case 4 -> {
+                    System.out.print("Enter new Pokémon attack name: ");
+                    scan.nextLine();
+                    String newattackname = scan.nextLine();
+                    System.out.print("Enter new attack's base damage: ");
+                    int newattackdmg = scan.nextInt();
+                    System.out.print("Enter new attack's accuracy: ");
+                    int newattackacc = scan.nextInt();
+                    scan.nextLine();
+                    System.out.print("Enter new attack's type: ");
+                    String newattacktype = scan.nextLine();
+                    Types newtype = Types.valueOf(newattacktype);
+                    selected.attacks.add(new Attack(newattackname, newattackdmg, newattackacc, newtype));
+                    System.out.println("Attack added successfully.");
+                }
+                case 5 -> {
+                    System.out.print("Which Pokémon attack to remove?: ");
+                    scan.nextLine();
+                    String atkremove = scan.nextLine();
+
+                    for (Attack pokeattack : selected.attacks) {
+                        if (atkremove.equalsIgnoreCase(pokeattack.name)) {
+                            selected.attacks.remove(pokeattack);
+                            System.out.println("Attack removed successfully.");
+                            break;
+                        } else if (atkremove!=(pokeattack.name)) {
+                            System.out.println("Attack doesn't exist. Try again.");
+                            break;
+                        }
+                    }
+                }
+            }
             break;
             }
         }
         if (selected == null) {
             System.out.println("Selected Pokémon does not exist.");
         }
-        System.out.println(selected);
+
+
+
+
+
+
+
+
+
     }
 
     public static void removePokemon(Scanner scan) {
