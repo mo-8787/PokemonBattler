@@ -13,7 +13,6 @@ public class Main {
     public static ArrayList<Pokemon> pokelist = new ArrayList<>();
 
     public static void main(String[] args) {
-
         Scanner scan = new Scanner(System.in);
         boolean running = true;
         resetData();
@@ -64,7 +63,6 @@ public class Main {
                     resetData();
                     System.out.println("Pokédex reset successfully.");
                 }
-
                 case 8 -> {
                     System.out.println("System quitting...");
                     running = false;
@@ -73,11 +71,8 @@ public class Main {
             }
         }
     }
-
     public static void editPokemon(Scanner scan) {
-
         boolean running = true;
-
         System.out.print("Select the Pokémon you wish to edit: ");
         scan.nextLine();
         String name = scan.nextLine();
@@ -168,7 +163,6 @@ public class Main {
             System.out.println("Selected Pokémon does not exist.");
         }
     }
-
     public static void removePokemon(Scanner scan) {
         System.out.print("Select the Pokémon you wish to remove: ");
         scan.nextLine();
@@ -186,8 +180,6 @@ public class Main {
             System.out.println("Selected Pokémon does not exist.");
         }
     }
-
-
     public static void resetData() {
         pokelist.clear();
 
