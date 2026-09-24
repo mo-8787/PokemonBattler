@@ -1,6 +1,9 @@
 package org.example;
 
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -13,19 +16,20 @@ public class Main {
 
         Scanner scan = new Scanner(System.in);
         boolean running = true;
-
         resetData();
+        Path pokepath = Path.of("saved pokémon.csv");
+        Path attackpath = Path.of("saved pokémon attack.csv");
 
         while (running) {
-            System.out.println("=== Pokédex Menu ===");
-            System.out.println("1.Show all Pokémon  2.Add a new Pokémon  3.Edit Pokémon  4.Remove Pokémon");
-            System.out.println("5.Save to file  6.Upload from file  7.Reset Pokédex  8.Save and quit.");
+            System.out.println("\n=== Pokédex Menu ===");
+            System.out.println("1.Show all Pokémon.\n2.Add a new Pokémon.\n3.Edit Pokémon.\n4.Remove Pokémon.");
+            System.out.println("5.Save to file. \n6.Upload from file. \n7.Reset Pokédex. \n8.Save and quit.");
             System.out.print("Choose option: ");
             int option = scan.nextInt();
             switch (option) {
                 case 1 -> {
                     for (Pokemon p : pokelist) {
-                        System.out.println(p);
+                        System.out.println("\n" + p);
                     }
                 }
                 case 2 -> {
@@ -54,8 +58,13 @@ public class Main {
                 }
                 case 3 -> editPokemon(scan);
                 case 4 -> removePokemon(scan);
+                case 5 -> savePokemon(pokelist, pokepath, attackpath);
 
-                case 7 -> resetData();
+                case 7 -> {
+                    resetData();
+                    System.out.println("Pokédex reset successfully.");
+                }
+
                 case 8 -> {
                     System.out.println("System quitting...");
                     running = false;
@@ -78,8 +87,8 @@ public class Main {
                 selected = poke;
                 while (running) {
                     System.out.println(selected);
-                    System.out.println("1.Change Pokémon name  2.Change Pokémon HP  ");
-                    System.out.println("3.Change Pokémon type  4.Teach a new attack  5.Remove attack  6.Cancel");
+                    System.out.println("1.Change Pokémon name.\n2.Change Pokémon HP.\n3.Change Pokémon type.");
+                    System.out.println("4.Teach a new attack.\n5.Remove attack.\n6.Return to main menu.");
                     System.out.print("Select option: ");
                     int option = scan.nextInt();
                     switch (option) {
@@ -146,67 +155,93 @@ public class Main {
                             }
                         }
                         case 6 -> {
-                            System.out.println("Going back.");
+                            System.out.println("Returning to main menu...");
                             running = false;
                         }
                         default -> System.out.println("Selected option does not exist.");
                     }
                 }
-                    break;
-                }
-            }
-            if (selected == null) {
-                System.out.println("Selected Pokémon does not exist.");
+                break;
             }
         }
+        if (selected == null) {
+            System.out.println("Selected Pokémon does not exist.");
+        }
+    }
 
-        public static void removePokemon (Scanner scan){
-            System.out.print("Select the Pokémon you wish to remove: ");
-            scan.nextLine();
-            String name = scan.nextLine();
-            Pokemon selected = null;
-            for (Pokemon poke : pokelist) {
-                if (name.equalsIgnoreCase(poke.name)) {
-                    selected = poke;
-                    pokelist.remove(selected);
-                    System.out.println("Pokémon removed successfully.");
-                    break;
-                }
-            }
-            if (selected == null) {
-                System.out.println("Selected Pokémon does not exist.");
+    public static void removePokemon(Scanner scan) {
+        System.out.print("Select the Pokémon you wish to remove: ");
+        scan.nextLine();
+        String name = scan.nextLine();
+        Pokemon selected = null;
+        for (Pokemon poke : pokelist) {
+            if (name.equalsIgnoreCase(poke.name)) {
+                selected = poke;
+                pokelist.remove(selected);
+                System.out.println("Pokémon removed successfully.");
+                break;
             }
         }
-
-
-        public static void resetData () {
-            pokelist.clear();
-
-            Pokemon p1 = new Pokemon("Piplup", Types.WATER, 53, 53);
-            p1.attacks.add(new Attack("Pound", 40, 100, Types.NORMAL));
-            Pokemon p2 = new Pokemon("Farfetch'd", Types.FLYING, Types.NORMAL, 52, 52);
-            p2.attacks.add(new Attack("Steel Wing", 70, 90, Types.STEEL));
-            Pokemon p3 = new Pokemon("Rayquaza", Types.DRAGON, Types.FLYING, 105, 105);
-            p3.attacks.add(new Attack("Dragon Ascent", 140, 100, Types.FLYING));
-            Pokemon p4 = new Pokemon("Torchic", Types.FIRE, 45, 45);
-            p4.attacks.add(new Attack("Ember", 40, 100, Types.FIRE));
-            Pokemon p5 = new Pokemon("Dratini", Types.DRAGON, 41, 41);
-            p5.attacks.add(new Attack("Twister", 40, 100, Types.DRAGON));
-            Pokemon p6 = new Pokemon("Oshawott", Types.WATER, 55, 55);
-            p6.attacks.add(new Attack("Water Gun", 40, 100, Types.WATER));
-            Pokemon p7 = new Pokemon("Articuno", Types.ICE, Types.FLYING, 90, 90);
-            p7.attacks.add(new Attack("Blizzard", 110, 70, Types.ICE));
-
-            pokelist.add(p1);
-            pokelist.add(p2);
-            pokelist.add(p3);
-            pokelist.add(p4);
-            pokelist.add(p5);
-            pokelist.add(p6);
-            pokelist.add(p7);
-
-            System.out.println("Pokédex cleared successfully.");
+        if (selected == null) {
+            System.out.println("Selected Pokémon does not exist.");
         }
+    }
 
+
+    public static void resetData() {
+        pokelist.clear();
+
+        Pokemon p1 = new Pokemon("Piplup", Types.WATER, 53, 53);
+        p1.attacks.add(new Attack("Pound", 40, 100, Types.NORMAL));
+        Pokemon p2 = new Pokemon("Farfetch'd", Types.FLYING, Types.NORMAL, 52, 52);
+        p2.attacks.add(new Attack("Steel Wing", 70, 90, Types.STEEL));
+        Pokemon p3 = new Pokemon("Rayquaza", Types.DRAGON, Types.FLYING, 105, 105);
+        p3.attacks.add(new Attack("Dragon Ascent", 140, 100, Types.FLYING));
+        Pokemon p4 = new Pokemon("Torchic", Types.FIRE, 45, 45);
+        p4.attacks.add(new Attack("Ember", 40, 100, Types.FIRE));
+        Pokemon p5 = new Pokemon("Dratini", Types.DRAGON, 41, 41);
+        p5.attacks.add(new Attack("Twister", 40, 100, Types.DRAGON));
+        Pokemon p6 = new Pokemon("Oshawott", Types.WATER, 55, 55);
+        p6.attacks.add(new Attack("Water Gun", 40, 100, Types.WATER));
+        Pokemon p7 = new Pokemon("Articuno", Types.ICE, Types.FLYING, 90, 90);
+        p7.attacks.add(new Attack("Blizzard", 110, 70, Types.ICE));
+
+        pokelist.add(p1);
+        pokelist.add(p2);
+        pokelist.add(p3);
+        pokelist.add(p4);
+        pokelist.add(p5);
+        pokelist.add(p6);
+        pokelist.add(p7);
 
     }
+
+    public static void savePokemon(ArrayList<Pokemon> pokelist, Path pokepath, Path attackpath) {
+        ArrayList<String> pokeLines = new ArrayList<>();
+        ArrayList<String> attackLines = new ArrayList<>();
+
+        for (Pokemon poke : pokelist) {
+            if (poke.type2 != null) {
+                pokeLines.add(poke.name + "," + poke.type1 + "," + poke.type2 + "," + poke.MaxHp + "," + poke.CurrentHp);
+            } else if (poke.type2 == null) {
+                pokeLines.add(poke.name + "," + poke.type1 + "," + poke.MaxHp + "," + poke.CurrentHp);
+            }
+            for (Attack attack : poke.attacks) {
+                attackLines.add(attack.name + "," + attack.baseDmg + "," + attack.accuracy + "," + attack.atkType + "," + poke.name);
+            }
+        }
+        String allPokemon = String.join("\n", pokeLines);
+        String allAttacks = String.join("\n", attackLines);
+
+        try {
+            Files.writeString(pokepath, allPokemon);
+            Files.writeString(attackpath, allAttacks);
+            System.out.println("Save successfull.");
+        } catch (IOException e) {
+            System.err.println("Save not possible: " + e.getMessage());
+        }
+
+    }
+
+
+}
