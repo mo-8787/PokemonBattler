@@ -4,13 +4,9 @@ package org.example;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+
 public class Main {
     public static ArrayList<Pokemon> pokelist = new ArrayList<>();
 
@@ -35,14 +31,16 @@ public class Main {
                     }
                 }
                 case 2 -> {
-                    System.out.print("Enter new Pokémon name: ");
                     scan.nextLine();
-                    String newName = scan.nextLine();
-                    System.out.print("Enter the Pokemon type: ");
+                    String newName = readname(scan,"Enter a new Pokémon name: ");
+
+
+                 //   newName = newName.trim();
+                 /*   System.out.print("Enter the Pokemon type: ");
                     String newType = scan.nextLine();
-                    Types type = Types.valueOf(newType);
-                    System.out.print("Is the Pokémon a dual type? (True or False): ");
-                    boolean dualtype = scan.nextBoolean();
+                    Types type = Types.valueOf(newType); */
+                    Types type = readTypes(scan,"Enter the Pokemon type: ");
+                    boolean dualtype = readBoolean(scan,"Is the Pokémon a dual type? (True or False): " );
                     Types type2 = null;
                     if (dualtype) {
                         System.out.print("Enter 2nd Type: ");
@@ -50,10 +48,9 @@ public class Main {
                         String newType2 = scan.nextLine();
                         type2 = Types.valueOf(newType2);
                     }
-                    System.out.print("Enter the Pokemon max Hp: ");
-                    int newMaxhp = scan.nextInt();
-                    System.out.print("Enter the Pokemon current Hp: ");
-                    int newCurhp = scan.nextInt();
+
+                    int newMaxhp = readInt(scan,"Enter the Pokémon max Hp: ");
+                    int newCurhp = readInt(scan, "Enter the Pokémon current Hp: ");
                     Pokemon p8 = new Pokemon(newName, type, type2, newMaxhp, newCurhp);
                     pokelist.add(p8);
                     System.out.println("Pokémon added successfully.");
@@ -134,8 +131,7 @@ public class Main {
                             String newattackname = scan.nextLine();
                             System.out.print("Enter new attack's base damage: ");
                             int newattackdmg = scan.nextInt();
-                            System.out.print("Enter new attack's accuracy: ");
-                            int newattackacc = scan.nextInt();
+                            int newattackacc = readaccuracy(scan,"Enter new attack's accuracy: ");
                             scan.nextLine();
                             System.out.print("Enter new attack's type: ");
                             String newattacktype = scan.nextLine();
@@ -179,6 +175,7 @@ public class Main {
         System.out.print("Select the Pokémon you wish to remove: ");
         scan.nextLine();
         String name = scan.nextLine();
+        name = name.trim();
         Pokemon selected = null;
         for (Pokemon poke : pokelist) {
             if (name.equalsIgnoreCase(poke.name)) {
@@ -322,18 +319,67 @@ public class Main {
                     return input;
                 }
                 scan.nextLine();
-                System.out.println("Enter valid integer. ");
+                System.out.println("Enter positive integer. ");
                 continue;
             }
-            System.out.println("Enter valid integer. ");
+            System.out.println("Enter positive integer. ");
             scan.next();
         }
     }
 
+    public static boolean readBoolean(Scanner scan, String prompt) {
+        while (true) {
+            System.out.print(prompt);
+            if (scan.hasNextBoolean()) {
+                return scan.nextBoolean();
+            }
+            System.out.println("Enter valid option. ");
+            scan.next();
+        }
+    }
+
+    public static Types readTypes (Scanner scan, String prompt) {
+        while (true) {
+            System.out.print(prompt);
+            String stringtype = scan.nextLine();
+            stringtype = stringtype.toUpperCase();
+            try {
+                Types type = Types.valueOf(stringtype);
+                return type;
+            } catch (IllegalArgumentException e) {
+                System.out.println("Enter a valid type. ");
+            }
+        }
+    }
+    public static String readname (Scanner scan, String prompt) {
+        while (true) {
+            System.out.print(prompt);
+            String input = scan.nextLine().trim();
+            if (input.length() < 100 && !input.isEmpty() && !input.contains(",")) {
+                return input;
+            }
+            System.out.println("Enter a valid name.");
+        }
+    }
+    public static int readaccuracy (Scanner scan, String prompt) {
+        while (true) {
+            System.out.print(prompt);
+            if (scan.hasNextInt()) {
+                int input = scan.nextInt();
+                if (input <= 100 && input >= 0) {
+                    return input;
+                }
+                System.out.println("Invalid accuracy, it needs to be between 0-100.");
+                scan.nextLine();
+                continue;
+            }
+            System.out.println("Invalid accuracy, it needs to be between 0-100.");
+            scan.next();
+
+        }
 
 
-
-
+    }
 
 
 
