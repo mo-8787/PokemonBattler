@@ -20,6 +20,7 @@ public class Pokemon {
         MaxHp = maxHp;
         CurrentHp = currentHp;
     }
+
     public Pokemon(String name, Types type1, int maxHp, int currentHp) { //constructor for single type
         this.name = name;
         this.type1 = type1;
@@ -27,9 +28,9 @@ public class Pokemon {
         CurrentHp = currentHp;
     }
 
-    @Override
+    @Override                         //so it becomes readable output
     public String toString() {
-        String result = name + " | Type: " + type1;
+        String result = "\n" + name + " | Type: " + type1;
         if (type2 != null) {
             result += " | Type: " + type2;
         }

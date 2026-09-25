@@ -8,7 +8,7 @@ public class Attack {
     public int accuracy;
     public Types atkType;
 
-    public Attack (String name, int baseDmg, int accuracy, Types atkType) { //constructor attack
+    public Attack(String name, int baseDmg, int accuracy, Types atkType) { //constructor attack
         this.name = name;
         this.baseDmg = baseDmg;
         this.accuracy = accuracy;

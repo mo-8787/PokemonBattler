@@ -1,11 +1,9 @@
 package org.example;
 
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
-
 
 public class Main {
     public static ArrayList<Pokemon> pokelist = new ArrayList<>();
@@ -15,41 +13,31 @@ public class Main {
         boolean running = true;
         Path pokepath = Path.of("saved pokémon.csv");
         Path attackpath = Path.of("saved pokémon attack.csv");
-        initializepokedex(pokepath,attackpath);
+        initializepokedex(pokepath, attackpath);
 
         while (running) {
             System.out.println("\n=== Pokédex Menu ===");
             System.out.println("1.Show all Pokémon.\n2.Add a new Pokémon.\n3.Edit Pokémon.\n4.Remove Pokémon.");
             System.out.println("5.Save to file. \n6.Upload from file. \n7.Reset Pokédex. \n8.Save and quit.");
-         //   System.out.print("Choose option: ");
-            int option = readInt(scan, "Choose option: ");
 
+            int option = readInt(scan, "Choose option: ");
             switch (option) {
                 case 1 -> {
                     for (Pokemon p : pokelist) {
-                        System.out.println("\n" + p);
+                        System.out.println(p);
                     }
                 }
                 case 2 -> {
                     scan.nextLine();
-                    String newName = readname(scan,"Enter a new Pokémon name: ");
-
-
-                 //   newName = newName.trim();
-                 /*   System.out.print("Enter the Pokemon type: ");
-                    String newType = scan.nextLine();
-                    Types type = Types.valueOf(newType); */
-                    Types type = readTypes(scan,"Enter the Pokemon type: ");
-                    boolean dualtype = readBoolean(scan,"Is the Pokémon a dual type? (True or False): " );
+                    String newName = readname(scan, "Enter a new Pokémon name: ");
+                    Types type = readTypes(scan, "Enter the Pokemon type: ");
+                    boolean dualtype = readBoolean(scan, "Is the Pokémon a dual type? (True or False): ");
                     Types type2 = null;
                     if (dualtype) {
-                        System.out.print("Enter 2nd Type: ");
                         scan.nextLine();
-                        String newType2 = scan.nextLine();
-                        type2 = Types.valueOf(newType2);
+                        type2 = readTypes(scan, "Enter 2nd type: ");
                     }
-
-                    int newMaxhp = readInt(scan,"Enter the Pokémon max Hp: ");
+                    int newMaxhp = readInt(scan, "Enter the Pokémon max Hp: ");
                     int newCurhp = readInt(scan, "Enter the Pokémon current Hp: ");
                     Pokemon p8 = new Pokemon(newName, type, type2, newMaxhp, newCurhp);
                     pokelist.add(p8);
@@ -68,53 +56,45 @@ public class Main {
                     System.out.println("System quitting...");
                     running = false;
                 }
-                default -> System.out.println("Option does not exist, try again.");
+                default -> System.out.println("Option does not exist, try again(1-8).");
             }
         }
     }
 
     public static void editPokemon(Scanner scan) {
         boolean running = true;
-        System.out.print("Select the Pokémon you wish to edit: ");
         scan.nextLine();
-        String name = scan.nextLine();
+        String name = readname(scan, "Write the name of the Pokémon you wish to edit: ");
+
         Pokemon selected = null;
         for (Pokemon poke : pokelist) {
             if (name.equalsIgnoreCase(poke.name)) {
                 selected = poke;
                 while (running) {
                     System.out.println(selected);
-                    System.out.println("1.Change Pokémon name.\n2.Change Pokémon HP.\n3.Change Pokémon type.");
+                    System.out.println("\n1.Change Pokémon name.\n2.Change Pokémon HP.\n3.Change Pokémon type.");
                     System.out.println("4.Teach a new attack.\n5.Remove attack.\n6.Return to main menu.");
-                  //  System.out.print("Select option: ");
-                  //  int option = scan.nextInt();
 
-                    int option = readInt(scan,"Select option: ");
+                    int option = readInt(scan, "Select option: ");
                     switch (option) {
                         case 1 -> {
-                            System.out.print("Enter new Pokémon name: ");
                             scan.nextLine();
-                            String newName = scan.nextLine();
+                            String newName = readname(scan, "Enter new Pokémon name: ");
                             poke.name = newName;
                             System.out.println("New name is: " + poke.name);
                         }
                         case 2 -> {
-                         //   scan.nextLine();
-                            int newHp = readInt(scan,"Enter new Pokémon max HP: ");
+                            int newHp = readInt(scan, "Enter new Pokémon max HP: ");
                             poke.MaxHp = newHp;
                             poke.CurrentHp = newHp;
                             System.out.println("New Pokémon max HP is: " + poke.MaxHp);
                         }
                         case 3 -> {
-                            System.out.print("Enter new Pokémon type: ");
                             scan.nextLine();
-                            String newType = scan.nextLine();
-                            Types newtype = Types.valueOf(newType);
+                            Types newtype = readTypes(scan, "Enter new Pokémon type: ");
                             poke.type1 = newtype;
                             if (poke.type2 != null) {
-                                System.out.print("Enter 2nd Pokémon type: ");
-                                String newType2 = scan.nextLine();
-                                Types newtype2 = Types.valueOf(newType2);
+                                Types newtype2 = readTypes(scan, "Enter 2nd Pokémon type: ");
                                 poke.type2 = newtype2;
                                 System.out.println("New Pokémon type is : " + poke.type1 + " | " + poke.type2);
                             } else if (poke.type2 == null) {
@@ -126,23 +106,18 @@ public class Main {
                                 System.out.println("Selected Pokémon cannot learn more attacks.");
                                 continue;
                             }
-                            System.out.print("Enter new Pokémon attack name: ");
                             scan.nextLine();
-                            String newattackname = scan.nextLine();
-                            System.out.print("Enter new attack's base damage: ");
-                            int newattackdmg = scan.nextInt();
-                            int newattackacc = readaccuracy(scan,"Enter new attack's accuracy: ");
+                            String newattackname = readname(scan, "Enter new Pokémon attack name: ");
+                            int newattackdmg = readInt(scan, "Enter new attack's base damage: ");
+                            int newattackacc = readaccuracy(scan, "Enter new attack's accuracy: ");
                             scan.nextLine();
-                            System.out.print("Enter new attack's type: ");
-                            String newattacktype = scan.nextLine();
-                            Types newtype = Types.valueOf(newattacktype);
+                            Types newtype = readTypes(scan, "Enter new attack's type: ");
                             selected.attacks.add(new Attack(newattackname, newattackdmg, newattackacc, newtype));
                             System.out.println("Attack added successfully.");
                         }
                         case 5 -> {
-                            System.out.print("Which Pokémon attack to remove?: ");
                             scan.nextLine();
-                            String atkremove = scan.nextLine();
+                            String atkremove = readname(scan, "Which Pokémon attack to remove?: ");
                             boolean foundattack = false;
                             for (Attack pokeattack : selected.attacks) {
                                 if (atkremove.equalsIgnoreCase(pokeattack.name)) {
@@ -160,7 +135,7 @@ public class Main {
                             System.out.println("Returning to main menu...");
                             running = false;
                         }
-                        default -> System.out.println("Selected option does not exist.");
+                        default -> System.out.println("Selected option does not exist, try again(1-6).");
                     }
                 }
                 break;
@@ -172,10 +147,8 @@ public class Main {
     }
 
     public static void removePokemon(Scanner scan) {
-        System.out.print("Select the Pokémon you wish to remove: ");
         scan.nextLine();
-        String name = scan.nextLine();
-        name = name.trim();
+        String name = readname(scan, "Write the name of the Pokémon you wish to remove: ");
         Pokemon selected = null;
         for (Pokemon poke : pokelist) {
             if (name.equalsIgnoreCase(poke.name)) {
@@ -215,7 +188,6 @@ public class Main {
         pokelist.add(p5);
         pokelist.add(p6);
         pokelist.add(p7);
-
     }
 
     public static void savePokemon(ArrayList<Pokemon> pokelist, Path pokepath, Path attackpath) {
@@ -239,9 +211,8 @@ public class Main {
             Files.writeString(attackpath, allAttacks);
             System.out.println("Save successful.");
         } catch (IOException e) {
-            System.err.println("Save not possible: " + e.getMessage());
+            System.err.println("Save not possible.");
         }
-
     }
 
     public static void uploadPokemon(Path pokepath, Path attackpath) {
@@ -292,27 +263,25 @@ public class Main {
             }
             System.out.println("New attacks added successfully");
         } catch (IOException e) {
-            System.err.println("Upload unsuccessful: " + e.getMessage());
+            System.err.println("Upload unsuccessful.");
         }
         pokelist = uploadedPokemon;
     }
 
 
     public static void initializepokedex(Path pokepath, Path attackpath) {
-
-
-        if(Files.exists(pokepath) && (Files.exists(attackpath))) {         //if both files exist execute this.
-            uploadPokemon(pokepath,attackpath);
+        if (Files.exists(pokepath) && (Files.exists(attackpath))) {         //if both files exist execute this.
+            uploadPokemon(pokepath, attackpath);
         } else if (Files.exists(pokepath) && (!Files.exists(attackpath))) {  //if only pokemon file exists but not its attacks
-            uploadPokemon(pokepath,attackpath);
-        }
-        else { resetData();}                                                //any other possibility (no pokemon file but attack file)
+            uploadPokemon(pokepath, attackpath);
+        } else {
+            resetData();
+        }                                                //any other possibility (for example no pokemon file but attack file)
     }
 
-    public static int readInt(Scanner scan,String prompt) {
+    public static int readInt(Scanner scan, String prompt) {
         while (true) {
             System.out.print(prompt);
-
             if (scan.hasNextInt()) {
                 int input = scan.nextInt();
                 if (input >= 1) {
@@ -338,7 +307,7 @@ public class Main {
         }
     }
 
-    public static Types readTypes (Scanner scan, String prompt) {
+    public static Types readTypes(Scanner scan, String prompt) {
         while (true) {
             System.out.print(prompt);
             String stringtype = scan.nextLine();
@@ -351,7 +320,8 @@ public class Main {
             }
         }
     }
-    public static String readname (Scanner scan, String prompt) {
+
+    public static String readname(Scanner scan, String prompt) {
         while (true) {
             System.out.print(prompt);
             String input = scan.nextLine().trim();
@@ -361,7 +331,8 @@ public class Main {
             System.out.println("Enter a valid name.");
         }
     }
-    public static int readaccuracy (Scanner scan, String prompt) {
+
+    public static int readaccuracy(Scanner scan, String prompt) {
         while (true) {
             System.out.print(prompt);
             if (scan.hasNextInt()) {
@@ -375,13 +346,6 @@ public class Main {
             }
             System.out.println("Invalid accuracy, it needs to be between 0-100.");
             scan.next();
-
         }
-
-
     }
-
-
-
-
 }
