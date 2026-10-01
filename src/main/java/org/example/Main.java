@@ -5,9 +5,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 
+import static org.example.InputHelper.*;
+
 public class Main {
     public static ArrayList<Pokemon> pokelist = new ArrayList<>();
-
     public static void main(String[] args) {
         Scanner scan = new Scanner(System.in);
         boolean running = true;
@@ -20,7 +21,7 @@ public class Main {
             System.out.println("1.Show all Pokémon.\n2.Add a new Pokémon.\n3.Edit Pokémon.\n4.Remove Pokémon.");
             System.out.println("5.Save to file. \n6.Upload from file. \n7.Reset Pokédex. \n8.Save and quit.");
 
-            int option = readInt(scan, "Choose option: ");
+            int option = InputHelper.readInt(scan, "Choose option: ");
             switch (option) {
                 case 1 -> {
                     for (Pokemon p : pokelist) {
@@ -44,7 +45,7 @@ public class Main {
                     scan.nextLine();
                     String newattackname = readname(scan, "Enter new Pokémon attack name: ");
                     int newattackdmg = readInt(scan, "Enter new attack's base damage: ");
-                    int newattackacc = readaccuracy(scan, "Enter new attack's accuracy: ");
+                    int newattackacc = InputHelper.readaccuracy(scan, "Enter new attack's accuracy: ");
                     scan.nextLine();
                     Types newtype = readTypes(scan, "Enter new attack's type: ");
                     p8.attacks.add(new Attack(newattackname,newattackdmg,newattackacc,newtype));
@@ -52,14 +53,14 @@ public class Main {
                 }
                 case 3 -> editPokemon(scan);
                 case 4 -> removePokemon(scan);
-                case 5 -> savePokemon(pokelist, pokepath, attackpath);
-                case 6 -> uploadPokemon(pokepath, attackpath);
+                case 5 -> FileHelper.savePokemon(pokelist, pokepath, attackpath);
+                case 6 -> pokelist = FileHelper.uploadPokemon(pokepath, attackpath);
                 case 7 -> {
                     resetData();
                     System.out.println("Pokédex reset successfully.");
                 }
                 case 8 -> {
-                    savePokemon(pokelist, pokepath, attackpath);
+                    FileHelper.savePokemon(pokelist, pokepath, attackpath);
                     System.out.println("System quitting...");
                     running = false;
                 }
@@ -116,7 +117,7 @@ public class Main {
                             scan.nextLine();
                             String newattackname = readname(scan, "Enter new Pokémon attack name: ");
                             int newattackdmg = readInt(scan, "Enter new attack's base damage: ");
-                            int newattackacc = readaccuracy(scan, "Enter new attack's accuracy: ");
+                            int newattackacc = InputHelper.readaccuracy(scan, "Enter new attack's accuracy: ");
                             scan.nextLine();
                             Types newtype = readTypes(scan, "Enter new attack's type: ");
                             selected.attacks.add(new Attack(newattackname, newattackdmg, newattackacc, newtype));
@@ -201,162 +202,13 @@ public class Main {
         pokelist.add(p7);
     }
 
-    public static void savePokemon(ArrayList<Pokemon> pokelist, Path pokepath, Path attackpath) {
-        ArrayList<String> pokeLines = new ArrayList<>();
-        ArrayList<String> attackLines = new ArrayList<>();
-
-        for (Pokemon poke : pokelist) {
-            if (poke.type2 != null) {
-                pokeLines.add(poke.name + "," + poke.type1 + "," + poke.type2 + "," + poke.MaxHp + "," + poke.CurrentHp);
-            } else if (poke.type2 == null) {
-                pokeLines.add(poke.name + "," + poke.type1 + "," + poke.MaxHp + "," + poke.CurrentHp);
-            }
-            for (Attack attack : poke.attacks) {
-                attackLines.add(attack.name + "," + attack.baseDmg + "," + attack.accuracy + "," + attack.atkType + "," + poke.name);
-            }
-        }
-        String allPokemon = String.join("\n", pokeLines);
-        String allAttacks = String.join("\n", attackLines);
-        try {
-            Files.writeString(pokepath, allPokemon);
-            Files.writeString(attackpath, allAttacks);
-            System.out.println("Save successful.");
-        } catch (IOException e) {
-            System.err.println("Save not possible.");
-        }
-    }
-
-    public static void uploadPokemon(Path pokepath, Path attackpath) {
-        ArrayList<Pokemon> uploadedPokemon = new ArrayList<>();
-        try {
-            List<String> pokeLines = Files.readAllLines(pokepath);
-            for (String line : pokeLines) {
-                if (line.isBlank()) continue;
-                String[] parts = line.split(",");
-                if (parts.length == 4) {
-                    String name = parts[0];
-                    Types types1 = Types.valueOf(parts[1]);
-                    int maxhp = Integer.parseInt(parts[2]);
-                    int curhp = Integer.parseInt(parts[3]);
-                    Pokemon newpoke = new Pokemon(name, types1, maxhp, curhp);
-                    uploadedPokemon.add(newpoke);
-                } else if (parts.length == 5) {
-                    String name = parts[0];
-                    Types types1 = Types.valueOf(parts[1]);
-                    Types types2 = Types.valueOf(parts[2]);
-                    int maxhp = Integer.parseInt(parts[3]);
-                    int curhp = Integer.parseInt(parts[4]);
-                    Pokemon newpoke = new Pokemon(name, types1, types2, maxhp, curhp);
-                    uploadedPokemon.add(newpoke);
-                }
-            }
-            System.out.println("New Pokémon added successfully");
-            if (!Files.exists(attackpath)) {
-                pokelist = uploadedPokemon;
-                return;
-            }
-            List<String> attackLines = Files.readAllLines(attackpath);
-            for (String line : attackLines) {
-                if (line.isBlank()) continue;
-                String[] parts = line.split(",");
-                String attackname = parts[0];
-                int basedmg = Integer.parseInt(parts[1]);
-                int accuracy = Integer.parseInt(parts[2]);
-                Types atktype = Types.valueOf(parts[3]);
-                String atktoPoke = parts[4];
-                Attack attack = new Attack(attackname, basedmg, accuracy, atktype);
-                for (Pokemon newpoke : uploadedPokemon) {
-                    if (newpoke.name.equalsIgnoreCase(atktoPoke)) {
-                        newpoke.attacks.add(attack);
-                        break;
-                    }
-                }
-            }
-            System.out.println("New attacks added successfully");
-        } catch (IOException e) {
-            System.err.println("Upload unsuccessful.");
-        }
-        pokelist = uploadedPokemon;
-    }
-
-
     public static void initializepokedex(Path pokepath, Path attackpath) {
         if (Files.exists(pokepath) && (Files.exists(attackpath))) {         //if both files exist execute this.
-            uploadPokemon(pokepath, attackpath);
+           pokelist = FileHelper.uploadPokemon(pokepath, attackpath);
         } else if (Files.exists(pokepath) && (!Files.exists(attackpath))) {  //if only pokemon file exists but not its attacks
-            uploadPokemon(pokepath, attackpath);
+           pokelist = FileHelper.uploadPokemon(pokepath, attackpath);
         } else {
             resetData();
         }                                                //any other possibility (for example no pokemon file but attack file)
-    }
-
-    public static int readInt(Scanner scan, String prompt) {
-        while (true) {
-            System.out.print(prompt);
-            if (scan.hasNextInt()) {
-                int input = scan.nextInt();
-                if (input >= 1) {
-                    return input;
-                }
-                scan.nextLine();
-                System.out.println("Enter positive integer. ");
-                continue;
-            }
-            System.out.println("Enter positive integer. ");
-            scan.next();
-        }
-    }
-
-    public static boolean readBoolean(Scanner scan, String prompt) {
-        while (true) {
-            System.out.print(prompt);
-            if (scan.hasNextBoolean()) {
-                return scan.nextBoolean();
-            }
-            System.out.println("Enter valid option. ");
-            scan.next();
-        }
-    }
-
-    public static Types readTypes(Scanner scan, String prompt) {
-        while (true) {
-            System.out.print(prompt);
-            String stringtype = scan.nextLine();
-            stringtype = stringtype.toUpperCase();
-            try {
-                Types type = Types.valueOf(stringtype);
-                return type;
-            } catch (IllegalArgumentException e) {
-                System.out.println("Enter a valid type. ");
-            }
-        }
-    }
-
-    public static String readname(Scanner scan, String prompt) {
-        while (true) {
-            System.out.print(prompt);
-            String input = scan.nextLine().trim();
-            if (input.length() < 100 && !input.isEmpty() && !input.contains(",")) {
-                return input;
-            }
-            System.out.println("Enter a valid name.");
-        }
-    }
-
-    public static int readaccuracy(Scanner scan, String prompt) {
-        while (true) {
-            System.out.print(prompt);
-            if (scan.hasNextInt()) {
-                int input = scan.nextInt();
-                if (input <= 100 && input >= 0) {
-                    return input;
-                }
-                System.out.println("Invalid accuracy, it needs to be between 0-100.");
-                scan.nextLine();
-                continue;
-            }
-            System.out.println("Invalid accuracy, it needs to be between 0-100.");
-            scan.next();
-        }
     }
 }
