@@ -41,6 +41,13 @@ public class Main {
                     int newCurhp = readInt(scan, "Enter the Pokémon current Hp: ");
                     Pokemon p8 = new Pokemon(newName, type, type2, newMaxhp, newCurhp);
                     pokelist.add(p8);
+                    scan.nextLine();
+                    String newattackname = readname(scan, "Enter new Pokémon attack name: ");
+                    int newattackdmg = readInt(scan, "Enter new attack's base damage: ");
+                    int newattackacc = readaccuracy(scan, "Enter new attack's accuracy: ");
+                    scan.nextLine();
+                    Types newtype = readTypes(scan, "Enter new attack's type: ");
+                    p8.attacks.add(new Attack(newattackname,newattackdmg,newattackacc,newtype));
                     System.out.println("Pokémon added successfully.");
                 }
                 case 3 -> editPokemon(scan);
@@ -117,6 +124,10 @@ public class Main {
                         }
                         case 5 -> {
                             scan.nextLine();
+                            if (selected.attacks.size() <= 1) {
+                                System.out.println("Selected Pokémon cannot unlearn more attacks.");
+                                continue;
+                            }
                             String atkremove = readname(scan, "Which Pokémon attack to remove?: ");
                             boolean foundattack = false;
                             for (Attack pokeattack : selected.attacks) {
