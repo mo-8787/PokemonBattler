@@ -48,7 +48,7 @@ public class Main {
                     int newattackacc = InputHelper.readaccuracy(scan, "Enter new attack's accuracy: ");
                     scan.nextLine();
                     Types newtype = readTypes(scan, "Enter new attack's type: ");
-                    p8.attacks.add(new Attack(newattackname,newattackdmg,newattackacc,newtype));
+                    p8.getAttacks().add(new Attack(newattackname,newattackdmg,newattackacc,newtype));
                     System.out.println("Pokémon added successfully.");
                 }
                 case 3 -> editPokemon(scan);
@@ -76,7 +76,7 @@ public class Main {
 
         Pokemon selected = null;
         for (Pokemon poke : pokelist) {
-            if (name.equalsIgnoreCase(poke.name)) {
+            if (name.equalsIgnoreCase(poke.getName())) {
                 selected = poke;
                 while (running) {
                     System.out.println(selected);
@@ -88,29 +88,29 @@ public class Main {
                         case 1 -> {
                             scan.nextLine();
                             String newName = readname(scan, "Enter new Pokémon name: ");
-                            poke.name = newName;
-                            System.out.println("New name is: " + poke.name);
+                            poke.setName(newName);
+                            System.out.println("New name is: " + poke.getName());
                         }
                         case 2 -> {
                             int newHp = readInt(scan, "Enter new Pokémon max HP: ");
-                            poke.MaxHp = newHp;
-                            poke.CurrentHp = newHp;
-                            System.out.println("New Pokémon max HP is: " + poke.MaxHp);
+                            poke.setMaxHp(newHp);
+                            poke.setCurrentHp(newHp);
+                            System.out.println("New Pokémon max HP is: " + poke.getMaxHp());
                         }
                         case 3 -> {
                             scan.nextLine();
                             Types newtype = readTypes(scan, "Enter new Pokémon type: ");
-                            poke.type1 = newtype;
-                            if (poke.type2 != null) {
+                            poke.setType1(newtype);
+                            if (poke.getType2() != null) {
                                 Types newtype2 = readTypes(scan, "Enter 2nd Pokémon type: ");
-                                poke.type2 = newtype2;
-                                System.out.println("New Pokémon type is : " + poke.type1 + " | " + poke.type2);
-                            } else if (poke.type2 == null) {
-                                System.out.println("New Pokémon type is : " + poke.type1);
+                                poke.setType2(newtype2);
+                                System.out.println("New Pokémon type is : " + poke.getType1() + " | " + poke.getType2());
+                            } else if (poke.getType2() == null) {
+                                System.out.println("New Pokémon type is : " + poke.getType1());
                             }
                         }
                         case 4 -> {
-                            if (selected.attacks.size() >= 4) {
+                            if (selected.getAttacks().size() >= 4) {
                                 System.out.println("Selected Pokémon cannot learn more attacks.");
                                 continue;
                             }
@@ -120,20 +120,20 @@ public class Main {
                             int newattackacc = InputHelper.readaccuracy(scan, "Enter new attack's accuracy: ");
                             scan.nextLine();
                             Types newtype = readTypes(scan, "Enter new attack's type: ");
-                            selected.attacks.add(new Attack(newattackname, newattackdmg, newattackacc, newtype));
+                            selected.getAttacks().add(new Attack(newattackname, newattackdmg, newattackacc, newtype));
                             System.out.println("Attack added successfully.");
                         }
                         case 5 -> {
                             scan.nextLine();
-                            if (selected.attacks.size() <= 1) {
+                            if (selected.getAttacks().size() <= 1) {
                                 System.out.println("Selected Pokémon cannot unlearn more attacks.");
                                 continue;
                             }
                             String atkremove = readname(scan, "Which Pokémon attack to remove?: ");
                             boolean foundattack = false;
-                            for (Attack pokeattack : selected.attacks) {
-                                if (atkremove.equalsIgnoreCase(pokeattack.name)) {
-                                    selected.attacks.remove(pokeattack);
+                            for (Attack pokeattack : selected.getAttacks()) {
+                                if (atkremove.equalsIgnoreCase(pokeattack.getName())) {
+                                    selected.getAttacks().remove(pokeattack);
                                     foundattack = true;
                                     System.out.println("Attack removed successfully.");
                                     break;
@@ -163,7 +163,7 @@ public class Main {
         String name = readname(scan, "Write the name of the Pokémon you wish to remove: ");
         Pokemon selected = null;
         for (Pokemon poke : pokelist) {
-            if (name.equalsIgnoreCase(poke.name)) {
+            if (name.equalsIgnoreCase(poke.getName())) {
                 selected = poke;
                 pokelist.remove(selected);
                 System.out.println("Pokémon removed successfully.");
@@ -179,19 +179,19 @@ public class Main {
         pokelist.clear();
 
         Pokemon p1 = new Pokemon("Piplup", Types.WATER, 53, 53);
-        p1.attacks.add(new Attack("Pound", 40, 100, Types.NORMAL));
+        p1.getAttacks().add(new Attack("Pound", 40, 100, Types.NORMAL));
         Pokemon p2 = new Pokemon("Farfetch'd", Types.FLYING, Types.NORMAL, 52, 52);
-        p2.attacks.add(new Attack("Steel Wing", 70, 90, Types.STEEL));
+        p2.getAttacks().add(new Attack("Steel Wing", 70, 90, Types.STEEL));
         Pokemon p3 = new Pokemon("Rayquaza", Types.DRAGON, Types.FLYING, 105, 105);
-        p3.attacks.add(new Attack("Dragon Ascent", 140, 100, Types.FLYING));
+        p3.getAttacks().add(new Attack("Dragon Ascent", 140, 100, Types.FLYING));
         Pokemon p4 = new Pokemon("Torchic", Types.FIRE, 45, 45);
-        p4.attacks.add(new Attack("Ember", 40, 100, Types.FIRE));
+        p4.getAttacks().add(new Attack("Ember", 40, 100, Types.FIRE));
         Pokemon p5 = new Pokemon("Dratini", Types.DRAGON, 41, 41);
-        p5.attacks.add(new Attack("Twister", 40, 100, Types.DRAGON));
+        p5.getAttacks().add(new Attack("Twister", 40, 100, Types.DRAGON));
         Pokemon p6 = new Pokemon("Oshawott", Types.WATER, 55, 55);
-        p6.attacks.add(new Attack("Water Gun", 40, 100, Types.WATER));
+        p6.getAttacks().add(new Attack("Water Gun", 40, 100, Types.WATER));
         Pokemon p7 = new Pokemon("Articuno", Types.ICE, Types.FLYING, 90, 90);
-        p7.attacks.add(new Attack("Blizzard", 110, 70, Types.ICE));
+        p7.getAttacks().add(new Attack("Blizzard", 110, 70, Types.ICE));
 
         pokelist.add(p1);
         pokelist.add(p2);

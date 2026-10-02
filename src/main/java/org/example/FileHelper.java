@@ -16,13 +16,13 @@ public class FileHelper {
         ArrayList<String> attackLines = new ArrayList<>();
 
         for (Pokemon poke : pokelist) {
-            if (poke.type2 != null) {
-                pokeLines.add(poke.name + "," + poke.type1 + "," + poke.type2 + "," + poke.MaxHp + "," + poke.CurrentHp);
-            } else if (poke.type2 == null) {
-                pokeLines.add(poke.name + "," + poke.type1 + "," + poke.MaxHp + "," + poke.CurrentHp);
+            if (poke.getType2() != null) {
+                pokeLines.add(poke.getName() + "," + poke.getType1() + "," + poke.getType2() + "," + poke.getMaxHp() + "," + poke.getCurrentHp());
+            } else if (poke.getType2() == null) {
+                pokeLines.add(poke.getName() + "," + poke.getType1() + "," + poke.getMaxHp() + "," + poke.getCurrentHp());
             }
-            for (Attack attack : poke.attacks) {
-                attackLines.add(attack.name + "," + attack.baseDmg + "," + attack.accuracy + "," + attack.atkType + "," + poke.name);
+            for (Attack attack : poke.getAttacks()) {
+                attackLines.add(attack.getName() + "," + attack.getBaseDmg() + "," + attack.getAccuracy() + "," + attack.getAtkType() + "," + poke.getName());
             }
         }
         String allPokemon = String.join("\n", pokeLines);
@@ -75,8 +75,8 @@ public class FileHelper {
                 String atktoPoke = parts[4];
                 Attack attack = new Attack(attackname, basedmg, accuracy, atktype);
                 for (Pokemon newpoke : uploadedPokemon) {
-                    if (newpoke.name.equalsIgnoreCase(atktoPoke)) {
-                        newpoke.attacks.add(attack);
+                    if (newpoke.getName().equalsIgnoreCase(atktoPoke)) {
+                        newpoke.getAttacks().add(attack);
                         break;
                     }
                 }
