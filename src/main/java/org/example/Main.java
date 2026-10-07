@@ -1,14 +1,21 @@
 package org.example;
 
-import java.io.IOException;
+import org.example.controller.BattleEngine;
+import org.example.model.Attack;
+import org.example.model.Pokemon;
+import org.example.model.Types;
+import org.example.repo.FileHelper;
+import org.example.utility.InputHelper;
+
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 
-import static org.example.InputHelper.*;
+import static org.example.utility.InputHelper.*;
 
 public class Main {
     public static ArrayList<Pokemon> pokelist = new ArrayList<>();
+
     public static void main(String[] args) {
         Scanner scan = new Scanner(System.in);
         boolean running = true;
@@ -20,6 +27,7 @@ public class Main {
             System.out.println("\n=== Pokédex Menu ===");
             System.out.println("1.Show all Pokémon.\n2.Add a new Pokémon.\n3.Edit Pokémon.\n4.Remove Pokémon.");
             System.out.println("5.Save to file. \n6.Upload from file. \n7.Reset Pokédex. \n8.Save and quit.");
+            System.out.println("9.Start a battle");
 
             int option = InputHelper.readInt(scan, "Choose option: ");
             switch (option) {
@@ -48,7 +56,7 @@ public class Main {
                     int newattackacc = InputHelper.readaccuracy(scan, "Enter new attack's accuracy: ");
                     scan.nextLine();
                     Types newtype = readTypes(scan, "Enter new attack's type: ");
-                    p8.getAttacks().add(new Attack(newattackname,newattackdmg,newattackacc,newtype));
+                    p8.getAttacks().add(new Attack(newattackname, newattackdmg, newattackacc, newtype));
                     System.out.println("Pokémon added successfully.");
                 }
                 case 3 -> editPokemon(scan);
@@ -64,7 +72,27 @@ public class Main {
                     System.out.println("System quitting...");
                     running = false;
                 }
-                default -> System.out.println("Option does not exist, try again(1-8).");
+                case 9 -> {
+                    // choose a pokemon from a list of pokemon available
+                    for (Pokemon p : pokelist) {
+                        System.out.println(p);
+                    }
+                    Pokemon chosenOne = searchPokemon(scan,pokelist,"\nChoose your Pokémon: ");
+                    // CPUs turn to choose a random pokemon from the list
+                    Pokemon chosenCPU = chooseRandomPoke(pokelist,"Choosing...");
+                    // create engine object in order to start a battle
+                    BattleEngine engine = new BattleEngine(chosenOne,chosenCPU);
+                    // start a battle
+                    engine.startBattle();
+                    // coin flip to decide who goes first
+
+                    // choose an attack
+                    // perform the attack
+                    // check if game is over
+                    // CPUs turn to choose and perform an attack
+                    // check if game is over otherwise repeat
+                }
+                default -> System.out.println("Option does not exist, try again(1-9).");
             }
         }
     }
@@ -204,11 +232,35 @@ public class Main {
 
     public static void initializepokedex(Path pokepath, Path attackpath) {
         if (Files.exists(pokepath) && (Files.exists(attackpath))) {         //if both files exist execute this.
-           pokelist = FileHelper.uploadPokemon(pokepath, attackpath);
+            pokelist = FileHelper.uploadPokemon(pokepath, attackpath);
         } else if (Files.exists(pokepath) && (!Files.exists(attackpath))) {  //if only pokemon file exists but not its attacks
-           pokelist = FileHelper.uploadPokemon(pokepath, attackpath);
+            pokelist = FileHelper.uploadPokemon(pokepath, attackpath);
         } else {
             resetData();
         }                                                //any other possibility (for example no pokemon file but attack file)
     }
+
+    public static Pokemon searchPokemon(Scanner scan, ArrayList<Pokemon> pokelist, String prompt) {
+        System.out.print(prompt);
+        scan.nextLine();
+        String selected = scan.nextLine();
+
+        for (Pokemon p : pokelist) {
+            if (selected.equalsIgnoreCase(p.getName())) {
+                return p;
+            }
+        }
+        System.out.println("Pokémon not found.");
+        return null;
+    }
+    public static Pokemon chooseRandomPoke(ArrayList<Pokemon> pokelist, String prompt) {
+        Random random = new Random();
+        int randompoke = random.nextInt(pokelist.size());
+        Pokemon randompokemon = pokelist.get(randompoke);
+
+        return randompokemon;
+    }
+
+
+
 }
