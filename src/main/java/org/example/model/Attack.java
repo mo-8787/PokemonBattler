@@ -1,6 +1,4 @@
-package org.example;
-
-import org.example.Types;
+package org.example.model;
 
 public class Attack {
     private String name;
