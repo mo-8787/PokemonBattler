@@ -1,4 +1,6 @@
-package org.example;
+package org.example.utility;
+
+import org.example.model.Types;
 
 import java.util.Scanner;
 
