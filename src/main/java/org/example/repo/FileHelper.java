@@ -1,4 +1,8 @@
-package org.example;
+package org.example.repo;
+
+import org.example.model.Attack;
+import org.example.model.Pokemon;
+import org.example.model.Types;
 
 import java.io.IOException;
 import java.nio.file.Files;
