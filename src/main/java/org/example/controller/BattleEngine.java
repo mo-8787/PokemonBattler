@@ -14,14 +14,49 @@ public class BattleEngine {
     }
 
     public void startBattle(){
+
+        boolean running = true;
         // coin flip to decide who goes first
         Random random = new Random();
-        
-        // choose an attack
-        // perform the attack
-        // check if game is over
-        // CPUs turn to choose and perform an attack
-        // check if game is over otherwise repeat
+        int turn = random.nextInt(2);
+        while (running) {
+            if (turn == 0) {
+                System.out.println("You go first!");
+                // choose an attack
+                System.out.print(p1.getAttacks());
+                System.out.println("Choose your attack: ");
+                //does the attack hit?
+                if (p1.getAttacks().get(0).getAccuracy() == 100) {
+                    //perform the attack
+                } else {
+                    int chance = random.nextInt(100);
+                    if (chance <= p1.getAttacks().get(0).getAccuracy()) {
+                        //perform the attack
+                    } else {
+                        System.out.println("Attack missed!");
+                    }
+                }
+                // perform the attack
+                // check if game is over
+                if (p2.isFainted()) {
+                    System.out.println("Battle won.");
+                    running = false;
+                }
+                turn = 1;
+            } else {
+                System.out.println("You go second!");
+                // CPUs turn to choose and perform an attack if it hits
+                // check if game is over otherwise repeat
+                if (p1.isFainted()) {
+                    System.out.println("Battle lost.");
+                    running = false;
+                }
+                turn = 0;
+            }
+
+        }
     }
+
+
 
 }
