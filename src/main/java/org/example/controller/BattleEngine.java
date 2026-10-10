@@ -7,7 +7,7 @@ import java.util.Random;
 public class BattleEngine {
     private Pokemon p1;
     private Pokemon p2;
-
+    Random random = new Random();
     public BattleEngine(Pokemon p1, Pokemon p2){
         this.p1 = p1;
         this.p2 = p2;
@@ -17,7 +17,7 @@ public class BattleEngine {
 
         boolean running = true;
         // coin flip to decide who goes first
-        Random random = new Random();
+
         int turn = random.nextInt(2);
         while (running) {
             if (turn == 0) {
@@ -29,9 +29,11 @@ public class BattleEngine {
                 if (p1.getAttacks().get(0).getAccuracy() == 100) {
                     //perform the attack
                 } else {
-                    int chance = random.nextInt(100);
+                    int chance = random.nextInt(101);
                     if (chance <= p1.getAttacks().get(0).getAccuracy()) {
                         //perform the attack
+                        int damagetaken = calculateAttackDmg();
+                        p2.takeDamage(damagetaken);
                     } else {
                         System.out.println("Attack missed!");
                     }
@@ -56,7 +58,19 @@ public class BattleEngine {
 
         }
     }
+    public int calculateAttackDmg() {
+        double rngmult = random.nextDouble(0.85,1.00);
+        double damagetaken = p1.getAttacks().get(0).getBaseDmg() * rngmult;
+        boolean isCrit = random.nextDouble(1.00) <= ((double) 1 /24);
+        if (isCrit) {
+            int damagetotal = (int) (damagetaken * 1.5);
+            return damagetotal;
+        } else {
+            int damagetotal = (int) (damagetaken);
+            return damagetotal;
+        }
 
+    }
 
 
 }
