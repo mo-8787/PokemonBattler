@@ -1,10 +1,22 @@
 Pound,40,100,NORMAL,Piplup
+Water Gun,40,100,NORMAL,Piplup
+Peck,35,100,FLYING,Piplup
+Fury Attack,15,85,NORMAL,Piplup
 Steel Wing,70,90,STEEL,Farfetch'd
+Gust,40,100,FLYING,Farfetch'd
 Dragon Ascent,140,100,FLYING,Rayquaza
+Air Slash,75,95,FLYING,Rayquaza
 Ember,40,100,FIRE,Torchic
+Flame Charge,50,100,FIRE,Torchic
 Twister,40,100,DRAGON,Dratini
+Tackle,40,100,NORMAL,Dratini
+Fury Cutter,40,95,BUG,Oshawott
 Water Gun,40,100,WATER,Oshawott
+Powder Snow,40,100,ICE,Articuno
 Blizzard,110,70,ICE,Articuno
+Whirlpool,35,85,WATER,Gyarados
 Waterfall,80,100,WATER,Gyarados
+Tackle,40,100,NORMAL,Jolteon
 Thunderbolt,60,100,ELECTRIC,Jolteon
-Brilliant Storm,40,100,NORMAL,Diancie
+Smack Down,50,100,ROCK,Diancie
+Ancient Power,60,100,ROCK,Diancie
