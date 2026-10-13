@@ -15,12 +15,14 @@ import static org.example.utility.InputHelper.*;
 
 public class Main {
     public static ArrayList<Pokemon> pokelist = new ArrayList<>();
+    public static ArrayList<Pokemon> wildpokemon = new ArrayList<>();
 
     public static void main(String[] args) {
         Scanner scan = new Scanner(System.in);
         boolean running = true;
         Path pokepath = Path.of("saved pokémon.csv");
         Path attackpath = Path.of("saved pokémon attack.csv");
+        addwildpokemon();
         initializepokedex(pokepath, attackpath);
 
         while (running) {
@@ -73,24 +75,16 @@ public class Main {
                     running = false;
                 }
                 case 9 -> {
-                    // choose a pokemon from a list of pokemon available
+                    scan.nextLine();
                     for (Pokemon p : pokelist) {
                         System.out.println(p);
                     }
                     Pokemon chosenOne = searchPokemon(scan,pokelist,"\nChoose your Pokémon: ");
-                    // CPUs turn to choose a random pokemon from the list
-                    Pokemon chosenCPU = chooseRandomPoke(pokelist,"Choosing...");
-                    // create engine object in order to start a battle
+                    Pokemon chosenCPU = chooseRandomPoke(wildpokemon,"Choosing...");
+                    System.out.println("Battle is between " + chosenOne.getName() + " and " + chosenCPU.getName());
                     BattleEngine engine = new BattleEngine(chosenOne,chosenCPU);
-                    // start a battle
                     engine.startBattle();
-                    // coin flip to decide who goes first
 
-                    // choose an attack
-                    // perform the attack
-                    // check if game is over
-                    // CPUs turn to choose and perform an attack
-                    // check if game is over otherwise repeat
                 }
                 default -> System.out.println("Option does not exist, try again(1-9).");
             }
@@ -221,6 +215,7 @@ public class Main {
         Pokemon p7 = new Pokemon("Articuno", Types.ICE, Types.FLYING, 90, 90);
         p7.getAttacks().add(new Attack("Blizzard", 110, 70, Types.ICE));
 
+
         pokelist.add(p1);
         pokelist.add(p2);
         pokelist.add(p3);
@@ -228,6 +223,21 @@ public class Main {
         pokelist.add(p5);
         pokelist.add(p6);
         pokelist.add(p7);
+
+    }
+    public static void addwildpokemon() {
+        Pokemon p8 = new Pokemon("Snorlax",Types.NORMAL,160,160);
+        p8.getAttacks().add(new Attack("Lick",30,100,Types.GHOST));
+        p8.getAttacks().add(new Attack("Tackle",40,100,Types.NORMAL));
+        Pokemon p9 = new Pokemon("Ninetales",Types.FIRE,73,73);
+        p9.getAttacks().add(new Attack("Fire Spin",35,85,Types.FIRE));
+        p9.getAttacks().add(new Attack("Stored Power",20,100,Types.PSYCHIC));
+        Pokemon p10 = new Pokemon("Salamence",Types.DRAGON,Types.FLYING,95,95);
+        p10.getAttacks().add(new Attack("Dual Wingbeat",40,90,Types.FLYING));
+        p10.getAttacks().add(new Attack("Dragon tail",60,90,Types.DRAGON));
+        wildpokemon.add(p8);
+        wildpokemon.add(p9);
+        wildpokemon.add(p10);
     }
 
     public static void initializepokedex(Path pokepath, Path attackpath) {
@@ -241,22 +251,20 @@ public class Main {
     }
 
     public static Pokemon searchPokemon(Scanner scan, ArrayList<Pokemon> pokelist, String prompt) {
-        System.out.print(prompt);
-        scan.nextLine();
-        String selected = scan.nextLine();
-
-        for (Pokemon p : pokelist) {
-            if (selected.equalsIgnoreCase(p.getName())) {
-                return p;
+        while (true) {
+            String name = InputHelper.readname(scan,prompt);
+            for (Pokemon p : pokelist) {
+                if (name.equalsIgnoreCase(p.getName())) {
+                    return p;
+                }
             }
+            System.out.println("Pokemon name invalid, try again.");
         }
-        System.out.println("Pokémon not found.");
-        return null;
     }
-    public static Pokemon chooseRandomPoke(ArrayList<Pokemon> pokelist, String prompt) {
+    public static Pokemon chooseRandomPoke(ArrayList<Pokemon> wildpokemon, String prompt) {
         Random random = new Random();
-        int randompoke = random.nextInt(pokelist.size());
-        Pokemon randompokemon = pokelist.get(randompoke);
+        int randompoke = random.nextInt(wildpokemon.size());
+        Pokemon randompokemon = wildpokemon.get(randompoke);
 
         return randompokemon;
     }
