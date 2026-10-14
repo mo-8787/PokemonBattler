@@ -32,9 +32,9 @@ public class Main {
 
         while (running) {
             System.out.println("\n=== Pokédex Menu ===");
-            System.out.println("1.Show all Pokémon.\n2.Add a new Pokémon.\n3.Edit Pokémon.\n4.Remove Pokémon.");
+            System.out.println("1.Show all Pokémon.\n2.Add a new Pokémon.\n3.Edit Pokémon(not available right now).\n4.Remove Pokémon.");
             System.out.println("5.Save to file. \n6.Upload from file. \n7.Reset Pokédex. \n8.Start a battle.");
-            System.out.println("10.Save and quit.");
+            System.out.println("9.Show Battle results. \n10.Save and quit.");
 
             int option = InputHelper.readInt(scan, "Choose option: ");
             switch (option) {
@@ -66,7 +66,7 @@ public class Main {
                     p8.getAttacks().add(new Attack(newattackname, newattackdmg, newattackacc, newtype));
                     System.out.println("Pokémon added successfully.");
                 }
-                case 3 -> editPokemon(scan);
+                case 3 -> /* editPokemon(scan);*/ System.out.println("Current option is not available, check later.");
                 case 4 -> removePokemon(scan);
                 case 5 -> FileHelperPokemon.savePokemon(pokelist, pokepath, attackpath);
                 case 6 -> pokelist = FileHelperPokemon.uploadPokemon(pokepath, attackpath);
@@ -75,11 +75,6 @@ public class Main {
                     System.out.println("Pokédex reset successfully.");
                 }
                 case 8 -> {
-                    FileHelperPokemon.savePokemon(pokelist, pokepath, attackpath);
-                    System.out.println("System quitting...");
-                    running = false;
-                }
-                case 9 -> {
                     scan.nextLine();
                     for (Pokemon p : pokelist) {
                         System.out.println(p);
@@ -96,14 +91,22 @@ public class Main {
                         losses++;
                     }
                     FileHelperBattler.saveResults(wins,losses,resultpath);
-
                 }
-                default -> System.out.println("Option does not exist, try again(1-9).");
+                case 9 -> {
+                    System.out.println("Ash has won " + wins + " time(s) and lost " + losses + " time(s).");
+                }
+                case 10 -> {
+                    FileHelperPokemon.savePokemon(pokelist, pokepath, attackpath);
+                    System.out.println("System quitting...");
+                    running = false;
+                }
+
+                default -> System.out.println("Option does not exist, try again(1-10).");
             }
         }
     }
 
-    public static void editPokemon(Scanner scan) {
+  /*  public static void editPokemon(Scanner scan) {
         boolean running = true;
         scan.nextLine();
         String name = readname(scan, "Write the name of the Pokémon you wish to edit: ");
@@ -190,7 +193,7 @@ public class Main {
         if (selected == null) {
             System.out.println("Selected Pokémon does not exist.");
         }
-    }
+    } */
 
     public static void removePokemon(Scanner scan) {
         scan.nextLine();
