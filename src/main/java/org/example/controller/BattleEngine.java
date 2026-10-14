@@ -4,6 +4,7 @@ import org.example.model.Attack;
 import org.example.model.Pokemon;
 import org.example.utility.InputHelper;
 
+
 import java.util.Random;
 import java.util.Scanner;
 
@@ -22,10 +23,11 @@ public class BattleEngine {
 
         boolean running = true;
 
-        int turn = random.nextInt(2);
+        System.out.println("Flipping a coin...");
+        int turn = coinFlip();
         while (running) {
             if (turn == 0) {
-                System.out.println("Your turn now. ");
+                System.out.println(p1.getName() + "'s turn now. ");
                 for (Attack a : p1.getAttacks()) {
                     System.out.println(a);
                 }
@@ -73,7 +75,7 @@ public class BattleEngine {
         }
     }
 
-    public int calculateAttackDmg(Attack attack) {
+    private int calculateAttackDmg(Attack attack) {
         double rngmult = random.nextDouble(0.85, 1.00);
         boolean isCrit = random.nextDouble(1.00) <= (1.0 / 24);
         double totaldmg = attack.getBaseDmg() * rngmult;
@@ -86,6 +88,16 @@ public class BattleEngine {
 
     private boolean attackHits(Attack attack) {
         return random.nextInt(100) < attack.getAccuracy();
+    }
+
+    private int coinFlip(){
+        int turn = random.nextInt(2);
+        if(turn == 0) {
+            System.out.println("Heads! " + p1.getName() + " goes first.");
+        } else {
+            System.out.println("Tails! " + p2.getName() + " goes first.");
+        }
+        return turn;
     }
 
 }
