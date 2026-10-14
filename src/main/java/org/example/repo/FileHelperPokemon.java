@@ -12,7 +12,7 @@ import java.util.List;
 
 
 
-public class FileHelper {
+public class FileHelperPokemon {
 
 
     public static void savePokemon(ArrayList<Pokemon> pokelist, Path pokepath, Path attackpath) {
