@@ -4,7 +4,8 @@ import org.example.controller.BattleEngine;
 import org.example.model.Attack;
 import org.example.model.Pokemon;
 import org.example.model.Types;
-import org.example.repo.FileHelper;
+import org.example.repo.FileHelperBattler;
+import org.example.repo.FileHelperPokemon;
 import org.example.utility.InputHelper;
 
 import java.nio.file.Files;
@@ -22,14 +23,18 @@ public class Main {
         boolean running = true;
         Path pokepath = Path.of("saved pokémon.csv");
         Path attackpath = Path.of("saved pokémon attack.csv");
+        Path resultpath = Path.of("Battle results.csv");
+        int [] results = FileHelperBattler.loadResults(resultpath);
+        int wins = results[0];
+        int losses = results[1];
         addwildpokemon();
         initializepokedex(pokepath, attackpath);
 
         while (running) {
             System.out.println("\n=== Pokédex Menu ===");
             System.out.println("1.Show all Pokémon.\n2.Add a new Pokémon.\n3.Edit Pokémon.\n4.Remove Pokémon.");
-            System.out.println("5.Save to file. \n6.Upload from file. \n7.Reset Pokédex. \n8.Save and quit.");
-            System.out.println("9.Start a battle");
+            System.out.println("5.Save to file. \n6.Upload from file. \n7.Reset Pokédex. \n8.Start a battle.");
+            System.out.println("10.Save and quit.");
 
             int option = InputHelper.readInt(scan, "Choose option: ");
             switch (option) {
@@ -63,14 +68,14 @@ public class Main {
                 }
                 case 3 -> editPokemon(scan);
                 case 4 -> removePokemon(scan);
-                case 5 -> FileHelper.savePokemon(pokelist, pokepath, attackpath);
-                case 6 -> pokelist = FileHelper.uploadPokemon(pokepath, attackpath);
+                case 5 -> FileHelperPokemon.savePokemon(pokelist, pokepath, attackpath);
+                case 6 -> pokelist = FileHelperPokemon.uploadPokemon(pokepath, attackpath);
                 case 7 -> {
                     resetData();
                     System.out.println("Pokédex reset successfully.");
                 }
                 case 8 -> {
-                    FileHelper.savePokemon(pokelist, pokepath, attackpath);
+                    FileHelperPokemon.savePokemon(pokelist, pokepath, attackpath);
                     System.out.println("System quitting...");
                     running = false;
                 }
@@ -80,10 +85,17 @@ public class Main {
                         System.out.println(p);
                     }
                     Pokemon chosenOne = searchPokemon(scan,pokelist,"\nChoose your Pokémon: ");
+                    chosenOne = statusCheck(chosenOne);
                     Pokemon chosenCPU = chooseRandomPoke(wildpokemon,"Choosing...");
                     System.out.println("Battle is between " + chosenOne.getName() + " and " + chosenCPU.getName());
                     BattleEngine engine = new BattleEngine(chosenOne,chosenCPU);
                     engine.startBattle();
+                    if (chosenCPU.isFainted()){
+                        wins++;
+                    } else {
+                        losses++;
+                    }
+                    FileHelperBattler.saveResults(wins,losses,resultpath);
 
                 }
                 default -> System.out.println("Option does not exist, try again(1-9).");
@@ -242,9 +254,9 @@ public class Main {
 
     public static void initializepokedex(Path pokepath, Path attackpath) {
         if (Files.exists(pokepath) && (Files.exists(attackpath))) {         //if both files exist execute this.
-            pokelist = FileHelper.uploadPokemon(pokepath, attackpath);
+            pokelist = FileHelperPokemon.uploadPokemon(pokepath, attackpath);
         } else if (Files.exists(pokepath) && (!Files.exists(attackpath))) {  //if only pokemon file exists but not its attacks
-            pokelist = FileHelper.uploadPokemon(pokepath, attackpath);
+            pokelist = FileHelperPokemon.uploadPokemon(pokepath, attackpath);
         } else {
             resetData();
         }                                                //any other possibility (for example no pokemon file but attack file)
@@ -269,6 +281,18 @@ public class Main {
         return randompokemon;
     }
 
+    public static Pokemon statusCheck(Pokemon poke) {
+        if (poke.isFainted()) {
+            System.out.println(poke.getName() + " is fainted, Nurse Joy is healing it back...");
+            poke.heal(poke.getMaxHp());
+            System.out.println(poke.getName() + " has fully healed and ready to fight.");
+        } if (poke.getCurrentHp() != poke.getMaxHp()) {
+            System.out.println(poke.getName() + " is injured, Nurse Joy is healing it back...");
+            poke.heal(poke.getMaxHp());
+            System.out.println(poke.getName() + " has fully healed and ready to fight.");
+        }
+        return poke;
+    }
 
 
 }
