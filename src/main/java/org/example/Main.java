@@ -81,7 +81,7 @@ public class Main {
                     }
                     Pokemon chosenOne = searchPokemon(scan,pokelist,"\nChoose your Pokémon: ");
                     chosenOne = statusCheck(chosenOne);
-                    Pokemon chosenCPU = chooseRandomPoke(wildpokemon,"Choosing...");
+                    Pokemon chosenCPU = chooseRandomPoke(wildpokemon);
                     System.out.println("Battle is between " + chosenOne.getName() + " and " + chosenCPU.getName());
                     BattleEngine engine = new BattleEngine(chosenOne,chosenCPU);
                     engine.startBattle();
@@ -276,11 +276,11 @@ public class Main {
             System.out.println("Pokemon name invalid, try again.");
         }
     }
-    public static Pokemon chooseRandomPoke(ArrayList<Pokemon> wildpokemon, String prompt) {
+    public static Pokemon chooseRandomPoke(ArrayList<Pokemon> wildpokemon) {
         Random random = new Random();
         int randompoke = random.nextInt(wildpokemon.size());
         Pokemon randompokemon = wildpokemon.get(randompoke);
-
+        System.out.println("A wild " + randompokemon.getName() + " has appeared.");
         return randompokemon;
     }
 
