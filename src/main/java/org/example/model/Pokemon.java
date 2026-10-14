@@ -1,12 +1,13 @@
 package org.example.model;
 
+
 import java.util.ArrayList;
 
 public class Pokemon {
-    private String name;
-    private Types type1;
-    private Types type2;
-    private int MaxHp;
+    private final String name;
+    private final Types type1;
+    private final Types type2;
+    private final int MaxHp;
     private int CurrentHp;
     private ArrayList<Attack> attacks = new ArrayList<>();
 
@@ -22,6 +23,7 @@ public class Pokemon {
     public Pokemon(String name, Types type1, int maxHp, int currentHp) { //constructor for single type
         this.name = name;
         this.type1 = type1;
+        this.type2 = null;
         MaxHp = maxHp;
         CurrentHp = currentHp;
     }
@@ -30,33 +32,32 @@ public class Pokemon {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+   /* public void setName(String name) {this.name = name;
+    } */
 
     public Types getType1() {
         return type1;
     }
 
-    public void setType1(Types type1) {
+    /*public void setType1(Types type1) {
         this.type1 = type1;
-    }
+    } */
 
     public Types getType2() {
         return type2;
     }
 
-    public void setType2(Types type2) {
+   /* public void setType2(Types type2) {
         this.type2 = type2;
-    }
+    } */
 
     public int getMaxHp() {
         return MaxHp;
     }
 
-    public void setMaxHp(int maxHp) {
+   /* public void setMaxHp(int maxHp) {
         MaxHp = maxHp;
-    }
+    } */
 
     public int getCurrentHp() {
         return CurrentHp;
@@ -84,17 +85,6 @@ public class Pokemon {
     }
 
     public boolean isFainted() {return getCurrentHp() <= 0;}
-
-
-
-
-
-
-
-
-
-
-
 
     @Override                         //so it becomes readable output
     public String toString() {
