@@ -20,7 +20,7 @@ public class Main {
     public static ArrayList<Pokemon> pokelist = new ArrayList<>();
     public static ArrayList<Pokemon> wildpokemon = new ArrayList<>();
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         Scanner scan = new Scanner(System.in);
         boolean running = true;
         Path pokepath = Path.of("saved pokémon.csv");

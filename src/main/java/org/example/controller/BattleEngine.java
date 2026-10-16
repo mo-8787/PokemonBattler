@@ -3,6 +3,7 @@ package org.example.controller;
 import org.example.model.Attack;
 import org.example.model.Pokemon;
 import org.example.utility.InputHelper;
+import org.example.utility.SleepHelper;
 
 
 import java.util.Random;
@@ -19,12 +20,12 @@ public class BattleEngine {
         this.p2 = p2;
     }
 
-    public void startBattle() throws InterruptedException {
+    public void startBattle() {
 
         boolean running = true;
 
         System.out.println("Flipping a coin...");
-        Thread.sleep(2000);
+        SleepHelper.sleep(2000);
         int turn = coinFlip();
         while (running) {
             System.out.println();
@@ -40,7 +41,7 @@ public class BattleEngine {
                     if (attackname.equalsIgnoreCase(atk.getName())) {
                         selected = atk;
                         System.out.println(p1.getName() + " is using " + selected.getName() + "...");
-                        Thread.sleep(2000);
+                        SleepHelper.sleep(2000);
                         break;
                     }
                 }
@@ -66,7 +67,7 @@ public class BattleEngine {
                 System.out.println(p2.getName() + "'s turn.");
                 Attack randomCpuAttack = p2.getAttacks().get(random.nextInt(p2.getAttacks().size()));
                 System.out.println(p2.getName() + " is using " + randomCpuAttack.getName() + "...");
-                Thread.sleep(2000);
+                SleepHelper.sleep(2000);
                 if (attackHits(randomCpuAttack)) {
                     int damagetaken = calculateAttackDmg(randomCpuAttack);
                     p1.takeDamage(damagetaken);
