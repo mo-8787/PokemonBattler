@@ -4,7 +4,10 @@ import org.example.model.Types;
 
 import java.util.Scanner;
 
-public class InputHelper {
+public final class InputHelper {
+    private InputHelper() {
+    }
+
     public static int readInt(Scanner scan, String prompt) {
         while (true) {
             System.out.print(prompt);
@@ -74,4 +77,5 @@ public class InputHelper {
             scan.next();
         }
     }
+
 }
