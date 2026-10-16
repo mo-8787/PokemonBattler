@@ -108,7 +108,6 @@ public class BattleEngine {
             System.out.println("Tails! " + p2.getName() + " goes first.");
         }
         return turn;
-
     }
 
 }
