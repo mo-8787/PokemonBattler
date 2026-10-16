@@ -19,15 +19,18 @@ public class BattleEngine {
         this.p2 = p2;
     }
 
-    public void startBattle() {
+    public void startBattle() throws InterruptedException {
 
         boolean running = true;
 
         System.out.println("Flipping a coin...");
+        Thread.sleep(2000);
         int turn = coinFlip();
         while (running) {
+            System.out.println();
             if (turn == 0) {
                 System.out.println(p1.getName() + "'s turn now. ");
+                System.out.println(p1.getName() + "'s attacks: ");
                 for (Attack a : p1.getAttacks()) {
                     System.out.println(a);
                 }
@@ -36,6 +39,8 @@ public class BattleEngine {
                 for (Attack atk : p1.getAttacks()) {
                     if (attackname.equalsIgnoreCase(atk.getName())) {
                         selected = atk;
+                        System.out.println(p1.getName() + " is using " + selected.getName() + "...");
+                        Thread.sleep(1000);
                         break;
                     }
                 }
@@ -47,10 +52,12 @@ public class BattleEngine {
                     int damagetaken = calculateAttackDmg(selected);
                     p2.takeDamage(damagetaken);
                     System.out.println(p2.getName() + " took " + damagetaken + " damage.");
+                    System.out.println(p2.getName() + " has " + p2.getCurrentHp() + " hp left.");
                 } else {
                     System.out.println("Attack missed!");
                 }
                 if (p2.isFainted()) {
+                    System.out.println();
                     System.out.println(p2.getName() + " fainted, Battle won.");
                     running = false;
                 }
@@ -58,15 +65,18 @@ public class BattleEngine {
             } else {
                 System.out.println(p2.getName() + "'s turn.");
                 Attack randomCpuAttack = p2.getAttacks().get(random.nextInt(p2.getAttacks().size()));
-                System.out.println(p2.getName() + " is using " + randomCpuAttack.getName() + ".");
+                System.out.println(p2.getName() + " is using " + randomCpuAttack.getName() + "...");
+                Thread.sleep(1000);
                 if (attackHits(randomCpuAttack)) {
                     int damagetaken = calculateAttackDmg(randomCpuAttack);
                     p1.takeDamage(damagetaken);
                     System.out.println(p1.getName() + " took " + damagetaken + " damage.");
+                    System.out.println(p1.getName() + " has " + p1.getCurrentHp() + " hp left.");
                 } else {
                     System.out.println("Attack missed!");
                 }
                 if (p1.isFainted()) {
+                    System.out.println();
                     System.out.println(p1.getName() + " fainted, Battle lost.");
                     running = false;
                 }
@@ -90,9 +100,9 @@ public class BattleEngine {
         return random.nextInt(100) < attack.getAccuracy();
     }
 
-    private int coinFlip(){
+    private int coinFlip() {
         int turn = random.nextInt(2);
-        if(turn == 0) {
+        if (turn == 0) {
             System.out.println("Heads! " + p1.getName() + " goes first.");
         } else {
             System.out.println("Tails! " + p2.getName() + " goes first.");
