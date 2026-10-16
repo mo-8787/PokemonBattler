@@ -1,7 +1,5 @@
 Pound,40,100,NORMAL,Piplup
 Water Gun,40,100,NORMAL,Piplup
-Peck,35,100,FLYING,Piplup
-Fury Attack,15,85,NORMAL,Piplup
 Steel Wing,70,90,STEEL,Farfetch'd
 Gust,40,100,FLYING,Farfetch'd
 Dragon Ascent,140,100,FLYING,Rayquaza
@@ -23,3 +21,4 @@ Ancient Power,60,100,ROCK,Diancie
 Leafage,40,100,GRASS,Meowscarada
 Bite,60,100,DARK,Meowscarada
 Confusion,50,100,PSYCHIC,Lunala
+Acrobatics,55,100,FLYING,Lunala
