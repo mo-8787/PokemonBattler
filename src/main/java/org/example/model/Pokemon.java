@@ -9,7 +9,7 @@ public class Pokemon {
     private final Types type2;
     private final int MaxHp;
     private int CurrentHp;
-    private ArrayList<Attack> attacks = new ArrayList<>();
+    private final ArrayList<Attack> attacks = new ArrayList<>();
 
 
     public Pokemon(String name, Types type1, Types type2, int maxHp, int currentHp) {    //constructor for dual type
@@ -71,20 +71,20 @@ public class Pokemon {
         return attacks;
     }
 
-    public void setAttacks(ArrayList<Attack> attacks) {
-        this.attacks = attacks;
-    }
 
     public void takeDamage(int amount) {
         if (amount < 0) throw new IllegalArgumentException("Damage cannot have negative value");
-        setCurrentHp(Math.max(0, getCurrentHp()-amount));
+        setCurrentHp(Math.max(0, getCurrentHp() - amount));
     }
+
     public void heal(int amount) {
         if (amount < 0) throw new IllegalArgumentException("Healing cannot have negative value.");
         setCurrentHp(Math.min(getMaxHp(), getCurrentHp() + amount));
     }
 
-    public boolean isFainted() {return getCurrentHp() <= 0;}
+    public boolean isFainted() {
+        return getCurrentHp() <= 0;
+    }
 
     @Override                         //so it becomes readable output
     public String toString() {
