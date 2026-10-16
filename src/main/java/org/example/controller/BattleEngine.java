@@ -40,7 +40,7 @@ public class BattleEngine {
                     if (attackname.equalsIgnoreCase(atk.getName())) {
                         selected = atk;
                         System.out.println(p1.getName() + " is using " + selected.getName() + "...");
-                        Thread.sleep(1000);
+                        Thread.sleep(2000);
                         break;
                     }
                 }
@@ -66,7 +66,7 @@ public class BattleEngine {
                 System.out.println(p2.getName() + "'s turn.");
                 Attack randomCpuAttack = p2.getAttacks().get(random.nextInt(p2.getAttacks().size()));
                 System.out.println(p2.getName() + " is using " + randomCpuAttack.getName() + "...");
-                Thread.sleep(1000);
+                Thread.sleep(2000);
                 if (attackHits(randomCpuAttack)) {
                     int damagetaken = calculateAttackDmg(randomCpuAttack);
                     p1.takeDamage(damagetaken);
