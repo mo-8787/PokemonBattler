@@ -174,9 +174,17 @@ public class Main {
         Pokemon p10 = new Pokemon("Salamence", Types.DRAGON, Types.FLYING, 95, 95);
         p10.getAttacks().add(new Attack("Dual Wingbeat", 40, 90, Types.FLYING));
         p10.getAttacks().add(new Attack("Dragon tail", 60, 90, Types.DRAGON));
+        Pokemon p11 = new Pokemon("Sylveon", Types.FAIRY, 95, 95);
+        p11.getAttacks().add(new Attack("Draining kiss", 50, 100, Types.FAIRY));
+        p11.getAttacks().add(new Attack("Trailblaze", 50, 100, Types.GRASS));
+        Pokemon p12 = new Pokemon("Arceus", Types.NORMAL, 120, 120);
+        p12.getAttacks().add(new Attack("Acid Spray", 40, 100, Types.POISON));
+        p12.getAttacks().add(new Attack("Hex", 65, 100, Types.GHOST));
         wildpokemon.add(p8);
         wildpokemon.add(p9);
         wildpokemon.add(p10);
+        wildpokemon.add(p11);
+        wildpokemon.add(p12);
     }
 
     public static void initializepokedex(Path pokepath, Path attackpath) {
