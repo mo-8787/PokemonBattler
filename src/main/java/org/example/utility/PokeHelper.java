@@ -7,14 +7,16 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class PokeHelper {
-    public static Pokemon statusCheck(Pokemon poke) {
+    public static Pokemon statusCheck(Pokemon poke) throws InterruptedException {
         if (poke.isFainted()) {
             System.out.println(poke.getName() + " is fainted, Nurse Joy is healing it back...");
+            Thread.sleep(2000);
             poke.heal(poke.getMaxHp());
             System.out.println(poke.getName() + " has fully healed and ready to fight.");
         }
         if (poke.getCurrentHp() != poke.getMaxHp()) {
             System.out.println(poke.getName() + " is injured, Nurse Joy is healing it back...");
+            Thread.sleep(2000);
             poke.heal(poke.getMaxHp());
             System.out.println(poke.getName() + " has fully healed and ready to fight.");
         }
