@@ -51,7 +51,7 @@ of chosen attack that gets multiplied by a rng factor (0.85-1.0).
 Each attack has a 1/24 (roughly 4%) chance to inflict critical damage
 (1.5x multiplier).
 
-The program uses Thread.sleep to try and replicate the delay in classic
+The program uses Sleephelper.sleep to try and replicate the delay in classic
 Pokémon battles between for example different attacks and their execution.
 
 
